@@ -85,7 +85,7 @@ router.get('/:id/completions', async (req, res) => {
 router.post('/:id/completions', async (req, res) => {
   try {
     const { id } = req.params;
-    const { date } = req.body;
+    const { date, completed } = req.body;
 
     if (!date) {
       return res.status(400).json({ error: 'Date is required' });
@@ -98,17 +98,23 @@ router.post('/:id/completions', async (req, res) => {
     );
 
     if (existingCompletion.rows.length > 0) {
-      // Toggle completion status
-      const result = await pool.query(
-        'UPDATE habit_completions SET completed = NOT completed WHERE habit_id = $1 AND completion_date = $2 RETURNING *',
-        [id, date]
-      );
+      // If completed parameter is provided, set it explicitly; otherwise toggle
+      const result = completed !== undefined
+        ? await pool.query(
+            'UPDATE habit_completions SET completed = $3 WHERE habit_id = $1 AND completion_date = $2 RETURNING *',
+            [id, date, completed]
+          )
+        : await pool.query(
+            'UPDATE habit_completions SET completed = NOT completed WHERE habit_id = $1 AND completion_date = $2 RETURNING *',
+            [id, date]
+          );
       res.json(result.rows[0]);
     } else {
-      // Create new completion
+      // Create new completion with the provided completed value or default to true
+      const completedValue = completed !== undefined ? completed : true;
       const result = await pool.query(
-        'INSERT INTO habit_completions (habit_id, completion_date, completed) VALUES ($1, $2, true) RETURNING *',
-        [id, date]
+        'INSERT INTO habit_completions (habit_id, completion_date, completed) VALUES ($1, $2, $3) RETURNING *',
+        [id, date, completedValue]
       );
       res.status(201).json(result.rows[0]);
     }

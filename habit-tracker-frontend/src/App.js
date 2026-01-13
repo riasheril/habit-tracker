@@ -94,12 +94,16 @@ function App() {
     }
   };
 
-  const toggleCompletion = async (habitId, date) => {
+  const toggleCompletion = async (habitId, date, completed = null) => {
     try {
+      const body = completed !== null
+        ? { date, completed }
+        : { date };
+
       const response = await fetch(`${API_URL}/api/habits/${habitId}/completions`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ date }),
+        body: JSON.stringify(body),
       });
 
       if (!response.ok) throw new Error('Failed to toggle completion');

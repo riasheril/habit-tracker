@@ -66,8 +66,26 @@ function ListView({ habits, completions, onToggleCompletion, onDeleteHabit }) {
     return daysInMonth > 0 ? Math.round((completedDays / daysInMonth) * 100) : 0;
   };
 
-  const handleToggle = (habitId) => {
-    onToggleCompletion(habitId, today);
+  const handleMarkComplete = (habitId) => {
+    const habitCompletions = completions[habitId] || [];
+    const completion = habitCompletions.find(c => c.completion_date === today);
+
+    // If already completed, do nothing
+    if (completion && completion.completed) return;
+
+    // Mark as completed
+    onToggleCompletion(habitId, today, true);
+  };
+
+  const handleMarkIncomplete = (habitId) => {
+    const habitCompletions = completions[habitId] || [];
+    const completion = habitCompletions.find(c => c.completion_date === today);
+
+    // If already marked as incomplete, do nothing
+    if (completion && !completion.completed) return;
+
+    // Mark as incomplete
+    onToggleCompletion(habitId, today, false);
   };
 
   return (
@@ -75,36 +93,46 @@ function ListView({ habits, completions, onToggleCompletion, onDeleteHabit }) {
       <h2>Today's Habits</h2>
       <div className="habits-list">
         {habits.map(habit => {
-          const completed = isCompletedToday(habit.id);
+          const habitCompletions = completions[habit.id] || [];
+          const completion = habitCompletions.find(c => c.completion_date === today);
+          const status = !completion ? 'not-started' : (completion.completed ? 'completed' : 'not-completed');
           const streak = calculateStreak(habit.id);
           const completionRate = getCompletionRate(habit.id);
 
           return (
             <div key={habit.id} className="habit-item">
-              <div className="habit-checkbox">
-                <input
-                  type="checkbox"
-                  checked={completed}
-                  onChange={() => handleToggle(habit.id)}
-                  id={`habit-${habit.id}`}
-                />
-                <label htmlFor={`habit-${habit.id}`} className={completed ? 'completed' : ''}>
-                  {habit.name}
-                </label>
+              <div className="habit-info">
+                <div className="habit-header">
+                  <span className="habit-name">{habit.name}</span>
+                  <span className="habit-streak">🔥 {streak} day streak</span>
+                </div>
+                <div className="habit-stats">
+                  <span className="stat">
+                    <strong>{completionRate}%</strong> this month
+                  </span>
+                </div>
               </div>
-              <div className="habit-stats">
-                <span className="stat">
-                  <strong>{streak}</strong> day streak
-                </span>
-                <span className="stat">
-                  <strong>{completionRate}%</strong> this month
-                </span>
+              <div className="habit-actions">
                 <button
-                  className="delete-btn-small"
+                  className={`status-btn yes-btn ${status === 'completed' ? 'active' : ''}`}
+                  onClick={() => handleMarkComplete(habit.id)}
+                  title="Mark as completed"
+                >
+                  Yes
+                </button>
+                <button
+                  className={`status-btn no-btn ${status === 'not-completed' ? 'active' : ''}`}
+                  onClick={() => handleMarkIncomplete(habit.id)}
+                  title="Mark as not completed"
+                >
+                  No
+                </button>
+                <button
+                  className="delete-btn-icon"
                   onClick={() => onDeleteHabit(habit.id)}
                   title="Delete habit"
                 >
-                  ✕
+                  🗑️
                 </button>
               </div>
             </div>

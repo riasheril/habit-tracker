@@ -35,68 +35,135 @@
   background-color: #ff9800;
   color: white;
   border-radius: 12px;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   font-weight: bold;
 }
 
 .delete-btn {
-  padding: 8px 16px;
-  background-color: #f44336;
-  color: white;
+  padding: 8px;
+  background: none;
+  color: #666;
   border: none;
-  border-radius: 5px;
   cursor: pointer;
-  font-size: 0.9rem;
-  transition: background-color 0.3s ease;
+  font-size: 1.3rem;
+  transition: color 0.3s ease;
+  line-height: 1;
 }
 
 .delete-btn:hover {
-  background-color: #d32f2f;
+  color: #f44336;
 }
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
-  gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: 8px;
   max-width: 100%;
+}
+
+.day-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.day-container.future {
+  opacity: 0.5;
 }
 
 .day {
   aspect-ratio: 1;
-  background-color: #eee;
-  border-radius: 4px;
+  background-color: #f1faee;
+  border-radius: 6px;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   transition: all 0.2s ease;
   position: relative;
-}
-
-.day:hover:not(.future) {
-  transform: scale(1.1);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  border: 2px solid transparent;
 }
 
 .day.completed {
-  background-color: #4CAF50;
+  background-color: #1d3557;
+  border-color: #1d3557;
 }
 
-.day.future {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
-  opacity: 0.5;
+.day.not-completed {
+  background-color: #e63946;
+  border-color: #e63946;
+}
+
+.day.not-started {
+  background-color: #f1faee;
+  border-color: #e0e0e0;
 }
 
 .day-number {
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: #666;
-  font-weight: 500;
+  font-weight: 600;
 }
 
-.day.completed .day-number {
+.day.completed .day-number,
+.day.not-completed .day-number {
   color: white;
   font-weight: bold;
+}
+
+.day-actions {
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+
+.day-btn {
+  flex: 1;
+  padding: 4px;
+  border: 1px solid #ddd;
+  background-color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
+.yes-btn-small {
+  color: #2d6a4f;
+}
+
+.yes-btn-small:hover {
+  border-color: #2d6a4f;
+  background-color: #f0f9f4;
+}
+
+.yes-btn-small.active {
+  background-color: #1d3557;
+  color: white;
+  border-color: #1d3557;
+}
+
+.no-btn-small {
+  color: #c1121f;
+}
+
+.no-btn-small:hover {
+  border-color: #c1121f;
+  background-color: #fff5f5;
+}
+
+.no-btn-small.active {
+  background-color: #e63946;
+  color: white;
+  border-color: #e63946;
 }
 
 @media (max-width: 768px) {

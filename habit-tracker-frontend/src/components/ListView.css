@@ -33,30 +33,33 @@
   box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
 }
 
-.habit-checkbox {
+.habit-info {
   display: flex;
-  align-items: center;
-  gap: 12px;
+  flex-direction: column;
+  gap: 8px;
   flex: 1;
 }
 
-.habit-checkbox input[type="checkbox"] {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-  accent-color: #4CAF50;
+.habit-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.habit-checkbox label {
+.habit-name {
   font-size: 1.1rem;
+  font-weight: 500;
   color: #333;
-  cursor: pointer;
-  transition: all 0.2s ease;
 }
 
-.habit-checkbox label.completed {
-  text-decoration: line-through;
-  color: #999;
+.habit-streak {
+  font-size: 0.9rem;
+  color: #666;
+  background-color: #fff3cd;
+  padding: 2px 8px;
+  border-radius: 12px;
+  white-space: nowrap;
 }
 
 .habit-stats {
@@ -72,26 +75,77 @@
 
 .stat strong {
   color: #4CAF50;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
-.delete-btn-small {
-  width: 32px;
-  height: 32px;
-  background-color: #f44336;
-  color: white;
-  border: none;
-  border-radius: 50%;
+.habit-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.status-btn {
+  padding: 8px 16px;
+  border: 2px solid #ddd;
+  background-color: white;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 1.2rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.status-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.yes-btn {
+  color: #2d6a4f;
+}
+
+.yes-btn:hover {
+  border-color: #2d6a4f;
+  background-color: #f0f9f4;
+}
+
+.yes-btn.active {
+  background-color: #1d3557;
+  color: white;
+  border-color: #1d3557;
+}
+
+.no-btn {
+  color: #c1121f;
+}
+
+.no-btn:hover {
+  border-color: #c1121f;
+  background-color: #fff5f5;
+}
+
+.no-btn.active {
+  background-color: #e63946;
+  color: white;
+  border-color: #e63946;
+}
+
+.delete-btn-icon {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.3rem;
+  padding: 4px;
+  color: #999;
+  transition: all 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
 }
 
-.delete-btn-small:hover {
-  background-color: #d32f2f;
+.delete-btn-icon:hover {
+  color: #e63946;
+  transform: scale(1.1);
 }
 
 @media (max-width: 768px) {

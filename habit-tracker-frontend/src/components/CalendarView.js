@@ -17,14 +17,16 @@ function CalendarView({ habits, completions, onToggleCompletion, onDeleteHabit }
     return days;
   };
 
-  const isCompleted = (habitId, date) => {
+  const getCompletionStatus = (habitId, date) => {
     const dateStr = date.toISOString().split('T')[0];
     const habitCompletions = completions[habitId] || [];
     const completion = habitCompletions.find(c => c.completion_date === dateStr);
-    return completion && completion.completed;
+
+    if (!completion) return 'not-started';
+    return completion.completed ? 'completed' : 'not-completed';
   };
 
-  const handleDayClick = (habitId, date) => {
+  const handleMarkComplete = (habitId, date) => {
     const dateStr = date.toISOString().split('T')[0];
     const today = new Date();
     today.setHours(0, 0, 0, 0);
@@ -33,7 +35,33 @@ function CalendarView({ habits, completions, onToggleCompletion, onDeleteHabit }
       return;
     }
 
-    onToggleCompletion(habitId, dateStr);
+    const habitCompletions = completions[habitId] || [];
+    const completion = habitCompletions.find(c => c.completion_date === dateStr);
+
+    // If already completed, do nothing
+    if (completion && completion.completed) return;
+
+    // Mark as completed
+    onToggleCompletion(habitId, dateStr, true);
+  };
+
+  const handleMarkIncomplete = (habitId, date) => {
+    const dateStr = date.toISOString().split('T')[0];
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    if (date > today) {
+      return;
+    }
+
+    const habitCompletions = completions[habitId] || [];
+    const completion = habitCompletions.find(c => c.completion_date === dateStr);
+
+    // If already marked as incomplete, do nothing
+    if (completion && !completion.completed) return;
+
+    // Mark as incomplete
+    onToggleCompletion(habitId, dateStr, false);
   };
 
   const calculateStreak = (habitId) => {
@@ -84,22 +112,25 @@ function CalendarView({ habits, completions, onToggleCompletion, onDeleteHabit }
       {habits.map(habit => (
         <div key={habit.id} className="habit-calendar">
           <div className="habit-header">
-            <div>
-              <h3>{habit.name}</h3>
-              <span className="streak">
-                {calculateStreak(habit.id)} day streak
-              </span>
+            <div className="habit-title">
+              <h3>
+                {habit.name}
+                <span className="streak">
+                  🔥 {calculateStreak(habit.id)} day streak
+                </span>
+              </h3>
             </div>
             <button
               className="delete-btn"
               onClick={() => onDeleteHabit(habit.id)}
+              title="Delete habit"
             >
-              Delete
+              🗑️
             </button>
           </div>
           <div className="calendar-grid">
             {days.map(day => {
-              const completed = isCompleted(habit.id, day);
+              const status = getCompletionStatus(habit.id, day);
               const today = new Date();
               today.setHours(0, 0, 0, 0);
               const isFuture = day > today;
@@ -107,11 +138,36 @@ function CalendarView({ habits, completions, onToggleCompletion, onDeleteHabit }
               return (
                 <div
                   key={day.toISOString()}
-                  className={`day ${completed ? 'completed' : ''} ${isFuture ? 'future' : ''}`}
-                  onClick={() => handleDayClick(habit.id, day)}
-                  title={`${day.toLocaleDateString()} - ${completed ? 'Completed' : 'Not completed'}`}
+                  className={`day-container ${isFuture ? 'future' : ''}`}
                 >
-                  <span className="day-number">{day.getDate()}</span>
+                  <div
+                    className={`day ${status}`}
+                    title={`${day.toLocaleDateString()} - ${
+                      status === 'completed' ? 'Completed' :
+                      status === 'not-completed' ? 'Not Completed' :
+                      'Not Started'
+                    }`}
+                  >
+                    <span className="day-number">{day.getDate()}</span>
+                  </div>
+                  {!isFuture && (
+                    <div className="day-actions">
+                      <button
+                        className={`day-btn yes-btn-small ${status === 'completed' ? 'active' : ''}`}
+                        onClick={() => handleMarkComplete(habit.id, day)}
+                        title="Mark as completed"
+                      >
+                        ✓
+                      </button>
+                      <button
+                        className={`day-btn no-btn-small ${status === 'not-completed' ? 'active' : ''}`}
+                        onClick={() => handleMarkIncomplete(habit.id, day)}
+                        title="Mark as not completed"
+                      >
+                        ✗
+                      </button>
+                    </div>
+                  )}
                 </div>
               );
             })}
