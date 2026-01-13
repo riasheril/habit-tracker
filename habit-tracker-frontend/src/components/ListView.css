@@ -1,0 +1,108 @@
+.list-view {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.list-view h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.habits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.habit-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  border: 2px solid #eee;
+  transition: all 0.2s ease;
+}
+
+.habit-item:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
+}
+
+.habit-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.habit-checkbox input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  accent-color: #4CAF50;
+}
+
+.habit-checkbox label {
+  font-size: 1.1rem;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.habit-checkbox label.completed {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.habit-stats {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.stat {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.stat strong {
+  color: #4CAF50;
+  font-size: 1.1rem;
+}
+
+.delete-btn-small {
+  width: 32px;
+  height: 32px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn-small:hover {
+  background-color: #d32f2f;
+}
+
+@media (max-width: 768px) {
+  .habit-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .habit-stats {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

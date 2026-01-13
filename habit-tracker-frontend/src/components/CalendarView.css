@@ -1,0 +1,112 @@
+.calendar-view {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-view h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.habit-calendar {
+  margin-bottom: 40px;
+}
+
+.habit-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.habit-header h3 {
+  margin: 0;
+  color: #333;
+  font-size: 1.3rem;
+}
+
+.streak {
+  display: inline-block;
+  margin-left: 15px;
+  padding: 4px 12px;
+  background-color: #ff9800;
+  color: white;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.delete-btn {
+  padding: 8px 16px;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background-color 0.3s ease;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+  gap: 5px;
+  max-width: 100%;
+}
+
+.day {
+  aspect-ratio: 1;
+  background-color: #eee;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.day:hover:not(.future) {
+  transform: scale(1.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.day.completed {
+  background-color: #4CAF50;
+}
+
+.day.future {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.day-number {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 500;
+}
+
+.day.completed .day-number {
+  color: white;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .calendar-grid {
+    grid-template-columns: repeat(7, 1fr);
+  }
+
+  .habit-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
