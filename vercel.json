@@ -1,0 +1,12 @@
+{
+  "buildCommand": "cd habit-tracker-frontend && npm install && npm run build",
+  "outputDirectory": "habit-tracker-frontend/build",
+  "installCommand": "cd habit-tracker-frontend && npm install",
+  "framework": "create-react-app",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
