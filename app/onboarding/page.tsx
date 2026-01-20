@@ -64,14 +64,7 @@ export default function OnboardingPage() {
         return;
       }
 
-      // Update Clerk metadata to mark onboarding as complete
-      await user?.update({
-        publicMetadata: {
-          hasCompletedOnboarding: true,
-        },
-      });
-
-      // Redirect to home
+      // Redirect to home (metadata is updated in the server action)
       router.push('/home');
     } catch (err) {
       console.error('Error during onboarding:', err);
