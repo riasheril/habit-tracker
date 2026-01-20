@@ -12,6 +12,8 @@ export function calculateStreak(completions: HabitCompletion[]): number {
   const allCompletions = [...completions].sort((a, b) => {
     const dateA = typeof a.completion_date === 'string' ? a.completion_date : new Date(a.completion_date).toISOString().split('T')[0];
     const dateB = typeof b.completion_date === 'string' ? b.completion_date : new Date(b.completion_date).toISOString().split('T')[0];
+
+    if (!dateA || !dateB) return 0;
     return dateB.localeCompare(dateA);
   });
 
