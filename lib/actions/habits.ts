@@ -3,7 +3,7 @@
 import pool from '@/lib/db';
 import { Habit, ActionResult } from '@/types';
 import { getHabitCount } from '@/lib/queries/habits';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
 import { getOrCreateUser } from '@/lib/user-utils';
 
@@ -43,7 +43,7 @@ export async function createHabit(name: string): Promise<ActionResult<Habit>> {
     const habit = result.rows[0] as Habit;
 
     // Revalidate cache
-    revalidateTag('habits');
+    revalidatePath('/home');
 
     return { success: true, data: habit };
   } catch (error) {
@@ -77,7 +77,7 @@ export async function deleteHabit(id: number): Promise<ActionResult<void>> {
     }
 
     // Revalidate cache
-    revalidateTag('habits');
+    revalidatePath('/home');
 
     return { success: true, data: undefined };
   } catch (error) {

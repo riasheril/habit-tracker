@@ -2,7 +2,7 @@
 
 import pool from '@/lib/db';
 import { HabitCompletion, ActionResult } from '@/types';
-import { revalidateTag } from 'next/cache';
+import { revalidatePath } from 'next/cache';
 import { auth } from '@clerk/nextjs/server';
 import { getOrCreateUser } from '@/lib/user-utils';
 
@@ -45,7 +45,7 @@ export async function logCompletion(
       );
 
       // Revalidate cache
-      revalidateTag('habits');
+      revalidatePath('/home');
 
       return { success: true, data: null };
     } else {
@@ -62,7 +62,7 @@ export async function logCompletion(
       const completion = result.rows[0] as HabitCompletion;
 
       // Revalidate cache
-      revalidateTag('habits');
+      revalidatePath('/home');
 
       return { success: true, data: completion };
     }
