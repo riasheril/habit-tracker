@@ -47,9 +47,11 @@ export default function StatsView({ initialHabits, initialMonth, initialYear }: 
 
     if (!earliestDate) return null;
 
+    // TypeScript assertion: we know earliestDate is not null after the check above
+    const date = earliestDate as Date;
     return {
-      month: earliestDate.getMonth(),
-      year: earliestDate.getFullYear()
+      month: date.getMonth(),
+      year: date.getFullYear()
     };
   }, [initialHabits]);
 
