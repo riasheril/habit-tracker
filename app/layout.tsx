@@ -5,7 +5,7 @@ import LayoutWrapper from '@/components/layout-wrapper';
 import { ClerkProvider } from '@clerk/nextjs';
 
 export const metadata: Metadata = {
-  title: 'Habit Tracker',
+  title: 'One Thing a Day',
   description: 'Build better habits, one day at a time',
 };
 
