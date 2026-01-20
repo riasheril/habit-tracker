@@ -18,7 +18,7 @@ export function calculateStreak(completions: HabitCompletion[]): number {
   });
 
   // If the most recent logged day was "not-completed", streak is broken (return 0)
-  if (allCompletions[0].completed === false) {
+  if (allCompletions[0]?.completed === false) {
     return 0;
   }
 
@@ -28,6 +28,7 @@ export function calculateStreak(completions: HabitCompletion[]): number {
     .sort((a, b) => {
       const dateA = typeof a.completion_date === 'string' ? a.completion_date : new Date(a.completion_date).toISOString().split('T')[0];
       const dateB = typeof b.completion_date === 'string' ? b.completion_date : new Date(b.completion_date).toISOString().split('T')[0];
+      if (!dateA || !dateB) return 0;
       return dateB.localeCompare(dateA);
     });
 
@@ -35,10 +36,15 @@ export function calculateStreak(completions: HabitCompletion[]): number {
 
   // Start from most recent completion and count backwards
   let streak = 1;
-  let currentDate = new Date(completed[0].completion_date);
+  const firstCompletion = completed[0];
+  if (!firstCompletion) return 0;
+  let currentDate = new Date(firstCompletion.completion_date);
 
   for (let i = 1; i < completed.length; i++) {
-    const prevDate = new Date(completed[i].completion_date);
+    const completion = completed[i];
+    if (!completion) continue;
+
+    const prevDate = new Date(completion.completion_date);
     const dayDiff = Math.floor(
       (currentDate.getTime() - prevDate.getTime()) / (1000 * 60 * 60 * 24)
     );
@@ -69,6 +75,7 @@ export function calculateLongestStreak(completions: HabitCompletion[]): number {
     .sort((a, b) => {
       const dateA = typeof a.completion_date === 'string' ? a.completion_date : new Date(a.completion_date).toISOString().split('T')[0];
       const dateB = typeof b.completion_date === 'string' ? b.completion_date : new Date(b.completion_date).toISOString().split('T')[0];
+      if (!dateA || !dateB) return 0;
       return dateA.localeCompare(dateB); // ascending order
     });
 
@@ -76,10 +83,15 @@ export function calculateLongestStreak(completions: HabitCompletion[]): number {
 
   let longestStreak = 1;
   let currentStreak = 1;
-  let previousDate = new Date(completed[0].completion_date);
+  const firstCompletion = completed[0];
+  if (!firstCompletion) return 0;
+  let previousDate = new Date(firstCompletion.completion_date);
 
   for (let i = 1; i < completed.length; i++) {
-    const currentDate = new Date(completed[i].completion_date);
+    const completion = completed[i];
+    if (!completion) continue;
+
+    const currentDate = new Date(completion.completion_date);
     const dayDiff = Math.floor(
       (currentDate.getTime() - previousDate.getTime()) / (1000 * 60 * 60 * 24)
     );

@@ -52,7 +52,11 @@ export async function getOrCreateUser(clerkUserId: string, email?: string): Prom
     [clerkUserId, userEmail]
   );
 
-  return result.rows[0];
+  const createdUser = result.rows[0];
+  if (!createdUser) {
+    throw new Error('Failed to create user');
+  }
+  return createdUser;
 }
 
 /**
