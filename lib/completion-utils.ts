@@ -43,6 +43,8 @@ export function getMonthlyPercentage(
       ? c.completion_date
       : new Date(c.completion_date).toISOString().split('T')[0];
 
+    if (!completionDate) return false;
+
     const date = new Date(completionDate);
     return date.getFullYear() === year && date.getMonth() === month;
   }).length;
