@@ -3,7 +3,7 @@
 import { useUser } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import { isUsernameAvailable, updateUsername } from '@/lib/user-utils';
+import { checkUsernameAvailability, updateUserUsernameAction } from '@/lib/actions/user';
 
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
@@ -42,7 +42,7 @@ export default function OnboardingPage() {
 
     try {
       // Check if username is available
-      const available = await isUsernameAvailable(username);
+      const available = await checkUsernameAvailability(username);
       if (!available) {
         setError('Username is already taken');
         setIsSubmitting(false);
@@ -57,7 +57,7 @@ export default function OnboardingPage() {
         return;
       }
 
-      const success = await updateUsername(clerkUserId, username);
+      const success = await updateUserUsernameAction(clerkUserId, username);
       if (!success) {
         setError('Failed to update username. Please try again.');
         setIsSubmitting(false);
