@@ -35,3 +35,27 @@ export function isFuture(date: Date): boolean {
   compareDate.setHours(0, 0, 0, 0);
   return compareDate > today;
 }
+
+/**
+ * Get the start of the week for a given date (Sunday = 0)
+ */
+export function startOfWeek(date: Date): Date {
+  const result = new Date(date);
+  const day = result.getDay();
+  const diff = result.getDate() - day;
+  result.setDate(diff);
+  result.setHours(0, 0, 0, 0);
+  return result;
+}
+
+/**
+ * Get the end of the week for a given date (Saturday)
+ */
+export function endOfWeek(date: Date): Date {
+  const result = new Date(date);
+  const day = result.getDay();
+  const diff = result.getDate() + (6 - day);
+  result.setDate(diff);
+  result.setHours(23, 59, 59, 999);
+  return result;
+}

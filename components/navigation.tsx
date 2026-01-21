@@ -8,7 +8,12 @@ export default function Navigation() {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
 
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => {
+    if (path === '/groups') {
+      return pathname?.startsWith('/groups');
+    }
+    return pathname === path;
+  };
 
   // Don't show navigation on auth pages
   const isAuthPage = pathname?.startsWith('/sign-in') ||
@@ -40,7 +45,7 @@ export default function Navigation() {
           </Link>
           <Link
             href="/stats"
-            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg mb-2 transition-colors ${
               isActive('/stats')
                 ? 'bg-emerald-50 text-emerald-700 font-medium'
                 : 'text-gray-700 hover:bg-gray-50'
@@ -48,6 +53,17 @@ export default function Navigation() {
           >
             <span className="text-2xl">📊</span>
             <span>Stats</span>
+          </Link>
+          <Link
+            href="/groups"
+            className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
+              isActive('/groups')
+                ? 'bg-emerald-50 text-emerald-700 font-medium'
+                : 'text-gray-700 hover:bg-gray-50'
+            }`}
+          >
+            <span className="text-2xl">👥</span>
+            <span>Groups</span>
           </Link>
         </div>
         <div className="p-4 border-t border-gray-200">
@@ -89,6 +105,17 @@ export default function Navigation() {
           >
             <span className="text-2xl mb-1">📊</span>
             <span className="text-xs font-medium">Stats</span>
+          </Link>
+          <Link
+            href="/groups"
+            className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
+              isActive('/groups')
+                ? 'text-emerald-700'
+                : 'text-gray-600'
+            }`}
+          >
+            <span className="text-2xl mb-1">👥</span>
+            <span className="text-xs font-medium">Groups</span>
           </Link>
           <div className="flex flex-col items-center justify-center flex-1 h-full text-gray-600">
             <UserButton
